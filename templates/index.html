@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('templates', path='styles/main.css') }}">
+    <script src="{{ url_for('templates', path='scripts/main.js') }}"></script>
+    <link href="{{ url_for('templates', path='images/favicon.ico') }}" rel="icon">
+    <title>Accidents vélo 2020</title>
+</head>
+
+<body class="ui container">
+    <h1><i class="bicycle icon"></i><strong> Accidents vélo 2020 </strong><small>(Source: data.gouv.fr)</small></h1>
+    <div class="ui stackable two column grid">
+        <div class="column">
+            <form method="get">
+                <legend>Filtrer par gravité de blessure de l'usager</legend>
+                <select name="filter">
+                    <option {% if request.query_params.filter=='%' %} selected="selected" {% endif %} value="%">Tous
+                    </option>
+                    <option {% if request.query_params.filter=='Indemne' %} selected="selected" {% endif %}
+                        value="Indemne">Indemne</option>
+                    <option {% if request.query_params.filter=='Blessé léger' %} selected="selected" {% endif
+                        %}value="Blessé léger">Blessé léger</option>
+                    <option {% if request.query_params.filter=='Blessé hospitalisé' %} selected="selected" {% endif %}
+                        value="Blessé hospitalisé">Blessé hospitalisé</option>
+                    <option {% if request.query_params.filter=='Tué' %} selected="selected" {% endif %}value="Tué">Tué
+                    </option>
+                </select>
+                <input type="submit" value="Valider" />
+            </form>
+            <table class=" ui striped table">
+                <thead>
+                    <tr>
+                        <th class="ten wide">Luminosité</th>
+                        <th class="six wide">Nombre Victimes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for accident in luminosite %}
+                    <tr>
+                        <td>{{ accident.cond }}</td>
+                        <td>{{ accident.num_accident }}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="ten wide">Localisation</th>
+                        <th class="six wide">Nombre Victimes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for accident in agglomeration %}
+                    <tr>
+                        <td>{{ accident.cond }}</td>
+                        <td>{{ accident.num_accident }}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="ten wide">Conditions atmosphériques</th>
+                        <th class="six wide">Nombre Victimes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for accident in atmospherique %}
+                    <tr>
+                        <td>{{ accident.cond }}</td>
+                        <td>{{ accident.num_accident }}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+        <div class="column" style="min-height: 400px;">
+            {% include "map.html" %}
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
