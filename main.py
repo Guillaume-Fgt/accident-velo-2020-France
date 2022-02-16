@@ -16,6 +16,8 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def read_item(request: Request):
     data_filter = request.query_params.get("filter", False)
+    if not data_filter:
+        data_filter = "%"
     connection = sqlite3.connect("app.db")
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
